@@ -1,0 +1,77 @@
+create table user(
+user_id int(4) NOT NULL UNIQUE AUTO_INCREMENT,
+user_name varchar(50),
+user_pwd char(32),
+user_email char(50),
+PRIMARY KEY (user_id));
+
+create table customer(
+cust_id int(11) NOT NULL UNIQUE AUTO_INCREMENT,
+cust_name varchar(50),
+cust_dob date,
+cust_gender char(1),
+cust_contact varchar(40),
+user_id int(11),		
+PRIMARY KEY (cust_id),
+FOREIGN KEY (user_id) REFERENCES user(user_id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE);
+
+create table bonus_point(
+point int(11),
+user_id int(4),
+FOREIGN KEY (user_id) REFERENCES user(user_id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE);
+
+create table status(
+status_code varchar(2) NOT NULL UNIQUE,
+status_name varchar(50),
+PRIMARY KEY (status_code));
+	
+create table product(
+product_id int(11) NOT NULL UNIQUE AUTO_INCREMENT,
+product_name varchar(50),
+product_quantity int(11),
+product_price double,
+product_img varchar(50),
+product_code int(11), 
+PRIMARY KEY (product_id))
+FOREIGN KEY (product_code) REFERENCES productcatgegory(product_code));
+
+create table productcategory(
+product_code int(11) NOT NULL UNIQUE,
+product_type varchar(50),
+PRIMARY KEY (product_code));
+
+
+create table item_detail(
+item_id int(11) NOT NULL UNIQUE AUTO_INCREMENT,
+item_date_made date,
+item_date_expired date,
+status_code varchar(2),
+product_id int(11),
+PRIMARY KEY (item_id),
+FOREIGN KEY (status_code) REFERENCES status(status_code)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
+FOREIGN KEY (product_id) REFERENCES product(product_id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE);
+
+create table invoice_detail(
+invoice_id int(11) NOT NULL UNIQUE AUTO_INCREMENT,
+sub_total double,
+tax double,
+total double,
+invoice_date timestamp,
+payment_method varchar(50),
+cust_id int(11),
+item_id int(11),
+PRIMARY KEY (invoice_id),
+FOREIGN KEY (cust_id) REFERENCES customer(cust_id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE,
+FOREIGN KEY (item_id) REFERENCES item_detail(item_id)
+	ON DELETE SET NULL
+	ON UPDATE CASCADE);
