@@ -11,7 +11,6 @@ if(isset($_POST['btnLogin'])){
     if(mysqli_num_rows($query_run)>0){
       echo '<script type="text/javascript">alert("Login Successful")</script>';
       $_SESSION['Username'] = $username;
-
     }
     else{
       echo '<script type="text/javascript">alert("Wrong Username or Password")</script>';
@@ -57,7 +56,7 @@ HTML;
           <div class="w3-center"><br>
             <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;</span>
           </div>
-          <form class="w3-container" action="Home.php" method="POST" onsubmit="signup();">
+          <form name="signupform" class="w3-container" action="Home.php" method="POST" onsubmit="return signup(this);">
             <div class="w3-section">
               <label><b><sup style="color:red;">*</sup>Username:</b></label>
               <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" name="Username" id="Username" required>
@@ -81,15 +80,14 @@ HTML;
               if(mysqli_num_rows($query_run)>0){
                 echo '<script type="text/javascript">alert("User already exists. Try another user name") </script>';
               }
+              if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                echo '<script type="text/javascript">alert("Write a valid email address.")</script>';
+              }
+
               else{
-                if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-                  echo '<script type="text/javascript">alert("Write a valid email address.")</script>';
-                }
-                else{
-                  $query = "INSERT INTO user(user_name, user_pwd, user_email) VALUES('$username','$password','$email')";
-                  $query_run = mysqli_query($con,$query);
-                  echo '<script type="text/javascript">alert("SignUp Completed") </script>';
-                }
+                $query = "INSERT INTO user(user_name, user_pwd, user_email) VALUES('$username','$password','$email')";
+                $query_run = mysqli_query($con,$query);
+                echo '<script type="text/javascript">alert("Sign-Up Completed") </script>';
               }
           }
           ?>
@@ -101,7 +99,7 @@ HTML;
   <?php
     if(isset($_SESSION['Username']) && !empty($_SESSION['Username'])) {
       echo<<<HERE
-      <form method="POST" action="{$_SERVER['PHP_SELF']}">
+      <form method="POST" action="Home.php">
         <button type="submit" name="btnSignOut" id="btnSignOut" class="w3-bar-item w3-button">Sign-out</button>
       </form>
 HERE;
@@ -117,7 +115,7 @@ HERE;
         <span onclick="document.getElementById('id02').style.display='none'" class="w3-button w3-xlarge w3-hover-red w3-display-topright" title="Close Modal">&times;
         </span>
       </div>
-      <form class="w3-container" action="Home.php" method="POST">
+      <form name="loginform" class="w3-container" action="Home.php" method="POST">
         <div class="w3-section">
           <label><b>Username</b></label>
           <input class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Enter Username" name="Username" required>
@@ -134,10 +132,19 @@ HERE;
     </div>
   </div>
 
-  <a href="#Home.php" class="w3-bar-item w3-button">Home</a>
-  <a href="#bread" class="w3-bar-item w3-button">Bread</a>
-  <a href="#pastry" class="w3-bar-item w3-button">Pastry</a>
-  <a href="#cakes" class="w3-bar-item w3-button">Cakes</a>
+  <a href="Home.php" class="w3-bar-item w3-button">Home</a>
+  <a href="Food.php?id=1" class="w3-bar-item w3-button">Bread</a>
+  <a href="Food.php?id=3" class="w3-bar-item w3-button">Pastry</a>
+  <a href="Food.php?id=2" class="w3-bar-item w3-button">Cakes</a>
+<?php
+  if(isset($_SESSION['Username']) && !empty($_SESSION['Username'])){
+    if($_SESSION['Username']=="Admin"){
+      echo<<<html
+      <a href="upload_image.php" class="w3-bar-item w3-button">Upload</a>
+html;
+    }
+  }
+?>
   <a href="#About" class="w3-bar-item w3-button">About</a>
 </div>
 <!-- Page Content -->
