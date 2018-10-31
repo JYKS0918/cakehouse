@@ -15,44 +15,23 @@ include 'Header.php'
                 $result = $ps->get_result();
                 while($row = $result->fetch_assoc()) {
                   echo<<<HERE
-                  <div class="w3-quarter">
-                  <a href="#cake">
-                  <img src="Pictures/{$row['product_img']}" alt="{$row['product_name']}" style="width:100%; opacity:0.8;">
-                  </a>
-                  <h3>The Perfect Icing Cakes</h3>
-                  <p>{$row['product_name']}</p>
+                  <div class="col-sm-4">
+                    <div class="panel-primary">
+                    <div class="panel-body">
+                      <img src="Pictures/{$row['product_img']}" alt="{$row['product_name']}" style="width:100%; opacity:0.8;">
+                    </div>
+                    <p style="font-size:18px;">{$row['product_name']}</p>
+                    <p style="font-size:18px;">RM {$row['product_price']}</p>
+                    </div>
                   </div>
+
+
 HERE;
                 }
                 die("");
               }
            }
            ?>
-       <!-- Second photo -->
-         <div class="w3-quarter">
-         <a href="#bread">
-           <img src="Pictures/bread.jpeg" alt="Bread" style="width:100%; height:200px; opacity:0.8; ">
-         </a>
-         <h3>Soft and fluffy bun freshly made</h3>
-         <p>Made from great butter.</p>
-         </div>
-       <!--  Thrid photo -->
-         <div class="w3-quarter">
-         <a href="#pastry">
-           <img src="Pictures/pastry.jpg" alt="Pastry" style="width:100%; opacity:0.8;">
-         </a>
-         <h3>Crunchy and Chewy Pastry</h3>
-         <p>Using the greatest flour and material</p>
-         </div>
-       <!-- Fourth Photo -->
-       <div class="w3-quarter">
-         <a href="#bread">
-           <img src="Pictures/HomeImage.jpg" alt="Home!" style="width:100%; opacity:0.8;">
-         </a>
-         <h3>AWESOME FOOD FOOD FOOD</h3>
-         <p>HELLO THIS IS THE BEST FOOD EVER</p>
-       </div>
-
      </div>
  </div>
  </body>
